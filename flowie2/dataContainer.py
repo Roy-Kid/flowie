@@ -6,6 +6,7 @@
 import h5py
 import logging
 from pathlib import Path
+from .viewer.tabulate import tabulate
 
 class Data(dict):
 
@@ -19,4 +20,7 @@ class Data(dict):
                     f[key] = value
                 except TypeError as e:
                     self.log.error(f'Error when dumping {key} to {path}')
-                    raise e        
+                    raise e
+
+    def __str__(self):
+        return tabulate(self, headers=self.keys())
