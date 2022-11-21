@@ -24,7 +24,7 @@ class Executable:
 
     def dump(self):
         
-        if self.path.exists():
+        if not self.path.exists():
             with open(self.path / Path(self.TYPE + '.pkl'), 'wb') as f:
                 pickle.dump(self, f)
 
@@ -42,4 +42,8 @@ class Executable:
     def _post(self):
         pass
 
-    
+    def _on_except(self):
+        pass
+
+    def _on_finish(self):
+        pass

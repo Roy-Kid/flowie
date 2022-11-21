@@ -4,17 +4,21 @@
 # version: 0.0.1
 
 from .executable import Executable
+from pathlib import Path
+from .dataContainer import Data
 
 class Task(Executable):
     
     def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
         
         super().__init__(params, path, name, comment, isSave)
-        
-        self.jobs = {}
+
+        self._data = Data()
 
     def launch(self):
         
+        self.log.info(f'Task {self.name} is launching...')
+
         try:
             self._pre()
             self._run()
@@ -25,15 +29,9 @@ class Task(Executable):
             self._on_finish()
 
     def _run(self):
+        raise NotImplementedError()
 
-        for Job in self.Jobs.values():
-            job = Job(self.params, self.path)
-            job()
+    def dump(self):
 
-    def add_job(self, job):
+        self._data.dump(self.path)
 
-        job_id = id(job)
-        if job_id not in self.jobs:
-            self.jobs[job_id] = job
-        else:
-            raise KeyError()
