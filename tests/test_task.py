@@ -16,4 +16,7 @@ class TestTask:
         task._data['c'] = np.random.random((3, 5))
         task.dump()
 
+        another_task = Task.load(task.path)
+        assert another_task.params['a'] == 1
+        assert another_task._data['b'] == 2
         

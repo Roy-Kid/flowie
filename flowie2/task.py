@@ -28,10 +28,19 @@ class Task(Executable):
         finally:
             self._on_finish()
 
+    def __getstate__(self):
+        return {k: v for k, v in self.__dict__.items() if k != '_data'}
+
     def _run(self):
         raise NotImplementedError()
 
     def dump(self):
-
+        super().dump()
         self._data.dump(self.path)
+
+    @classmethod
+    def load(cls, path):
+        ins = super().load(path)
+        ins._data = Data.load(path)
+        return ins
 

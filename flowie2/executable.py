@@ -24,9 +24,8 @@ class Executable:
 
     def dump(self):
         
-        if not self.path.exists():
-            with open(self.path / Path(self.TYPE + '.pkl'), 'wb') as f:
-                pickle.dump(self, f)
+        with open(self.path / Path(self.TYPE + '.pkl'), 'wb') as f:
+            pickle.dump(self, f)
 
     @classmethod
     def load(cls, path:Path):
