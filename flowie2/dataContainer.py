@@ -7,6 +7,8 @@ import h5py
 import logging
 from pathlib import Path
 from .viewer.tabulate import tabulate
+import glob
+import numpy as np
 
 class Data(dict):
 
@@ -24,3 +26,30 @@ class Data(dict):
 
     def __str__(self):
         return tabulate(self, headers=self.keys())
+
+    @classmethod
+    def load(cls, path):
+
+        ins = cls()
+
+        path = Path(path)
+        if path.is_dir():
+            hdf5_list = glob.glob('*.hdf5', root_dir=path)
+
+            if not len(hdf5_list):
+                msg = f'no hdf5 file found, or {path} is not a job path'
+                ins.log.error(msg)
+                raise FileNotFoundError(msg)
+            for hf in hdf5_list:
+
+                with h5py.File(path/Path(hf)) as f:
+                    for key, value in f.items():
+                        ins[key] = np.array(value)
+            return ins
+        elif path.is_file():
+
+                with h5py.File(path/Path(hf)) as f:
+                    for key, value in f.items():
+                        ins[key] = np.array(value)
+
+        return ins  
