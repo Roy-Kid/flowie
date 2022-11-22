@@ -16,7 +16,7 @@ class Data(dict):
     log = logging.getLogger('Data')
     # lastModifyTime etc.
 
-    def dump(self, path:str, format:str='hdf5'):
+    def dump(self, path:PathLike, format:str='hdf5'):
         write_to = Path(path)/Path('data.hdf5')
         self.log.info(f'dump data to {write_to}')
         with h5py.File(write_to, 'w') as f:

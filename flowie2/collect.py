@@ -3,10 +3,11 @@
 # date: 2022-11-22
 # version: 0.0.1
 
-from .typing import Data, Iterable, Literal, Optional, Any, Callable
+from .typing import Iterable, Literal, Optional, Any, Callable
 import numpy as np
+from .dataContainer import DataLike, Data
 
-def reduce(func:Callable, data_set: Iterable[Data], field:str, initializer:Optional[Any]):
+def reduce(func:Callable, data_set: Iterable[DataLike], field:str, initializer:Optional[Any]):
     data_set = iter(data_set)
     if initializer is None:
         tmp = next(data_set)[field]
@@ -18,7 +19,7 @@ def reduce(func:Callable, data_set: Iterable[Data], field:str, initializer:Optio
 
     return tmp
 
-def reduce_array(data_set: Iterable[Data], field:str, op:Literal['mean', 'sum', 'max', 'min']) -> Data:
+def reduce_array(data_set: Iterable[DataLike], field:str, op:Literal['mean', 'sum', 'max', 'min']) -> Data:
 
     tmp = []
     for data in data_set:

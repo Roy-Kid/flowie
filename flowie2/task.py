@@ -36,7 +36,7 @@ class Task(Executable):
         return {k: v for k, v in self.__dict__.items() if k not in ['log', 'cache', 'data', ]}
 
     def run(self):
-        raise NotImplementedError()
+        self.log.info('run')
 
     def dump(self):
         super().dump()
