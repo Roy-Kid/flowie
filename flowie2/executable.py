@@ -7,10 +7,11 @@ import logging, pickle
 from pathlib import Path
 from .log import get_logger
 from .typing import PathLike
+from .paramSpace import ParamLike
 
 class Executable:
 
-    def __init__(self, params:dict, path:PathLike, name:str='', comment:str='', isSave:bool=True):
+    def __init__(self, params:ParamLike, path:PathLike, name:str='', comment:str='', isSave:bool=True):
         self.TYPE = str(self.__class__.__name__)
         self.params = params
         self.name = name if name else id(self)
@@ -47,4 +48,4 @@ class Executable:
         pass
 
     def on_finish(self):
-        pass
+        self.dump()
