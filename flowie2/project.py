@@ -4,11 +4,15 @@
 # version: 0.0.1
 
 from .executable import Executable
+from .typing import ParamLike, PathLike
+from .paramSpace import ParamSpace
 
 class Project(Executable):
 
-    def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
-        super().__init__(params, path, name, comment, isSave)
+    params: ParamSpace
+
+    def __init__(self, params: ParamLike, path: PathLike, name: str = '', comment: str = '', isSave: bool = True):
+        super().__init__(ParamSpace(params), path, name, comment, isSave)
 
         self.exe = {}
 
@@ -20,4 +24,9 @@ class Project(Executable):
             self.log.exception('duplicate adding exe')
         
     def launch(self):
-        pass
+        
+        params = self.params.expand()
+        for param in params:
+            for exe in self.exe.values():
+                exe_ins = exe(param, self.path, isSave=True)
+                exe_ins.launch()

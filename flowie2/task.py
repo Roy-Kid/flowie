@@ -6,10 +6,11 @@
 from .executable import Executable
 from pathlib import Path
 from .dataContainer import Data
+from .typing import PathLike
 
 class Task(Executable):
     
-    def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
+    def __init__(self, params: dict, path: PathLike, name: str = '', comment: str = '', isSave: bool = True):
         
         super().__init__(params, path, name, comment, isSave)
 
