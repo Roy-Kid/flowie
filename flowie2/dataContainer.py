@@ -16,7 +16,9 @@ class Data(dict):
     # lastModifyTime etc.
 
     def dump(self, path:str, format:str='hdf5'):
-        with h5py.File(Path(path)/Path('data.hdf5') , 'w') as f:
+        write_to = Path(path)/Path('data.hdf5')
+        self.log.info(f'dump data to {write_to}')
+        with h5py.File(write_to, 'w') as f:
             for key, value in self.items():
                 try:
                     f[key] = value
