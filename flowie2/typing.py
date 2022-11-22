@@ -4,9 +4,11 @@
 # version: 0.0.1
 
 from pathlib import Path
-from typing import Union, Any, Dict, List, Tuple, Optional, Callable, TypeVar, Generic, Type, cast, overload, TYPE_CHECKING, NewType
+from typing import *  # noqa
 import numpy as np
+from .dataContainer import Data
 
 PathLike = Union[str, Path]
-number = Union[int, float]
-array = NewType('array', np.ndarray)
+Number = Union[int, float]
+Array = NewType('Array', np.ndarray)
+Data = NewType('Data', Data)

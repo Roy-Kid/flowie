@@ -50,7 +50,7 @@ class Data(dict):
             return ins
         elif path.is_file():
 
-                with h5py.File(path/Path(hf)) as f:
+                with h5py.File(path) as f:
                     for key, value in f.items():
                         ins[key] = np.array(value)
 

@@ -11,7 +11,7 @@ from .typing import PathLike
 class Executable:
 
     def __init__(self, params:dict, path:PathLike, name:str='', comment:str='', isSave:bool=True):
-        self.TYPE = self.__class__.__name__
+        self.TYPE = str(self.__class__.__name__)
         self.params = params
         self.name = name if name else id(self)
         self.path = Path(path) / Path(f'{self.name}')
