@@ -3,7 +3,7 @@
 # date: 2022-11-22
 # version: 0.0.1
 
-from .typing import Iterable, List
+from .typing import Iterable, List, Union, Dict
 
 class ParamSpaceIterator:
 
@@ -65,3 +65,5 @@ class ParamSpace(dict):
     
     def __len__(self):
         return len(self.expand())
+    
+ParamLike = Union[Dict, ParamSpace]
