@@ -26,7 +26,7 @@ class Job(Executable):
         finally:
             self._on_finish()
 
-    def _run(self):
+    def run(self):
 
         for task in self.tasks.values():
             task = task(self.params, self.path)

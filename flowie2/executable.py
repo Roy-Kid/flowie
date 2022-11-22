@@ -35,14 +35,14 @@ class Executable:
     def launch(self):
         pass
 
-    def _pre(self):
+    def pre(self):
         pass
 
-    def _post(self):
+    def post(self):
         pass
 
-    def _on_except(self):
+    def on_except(self):
         pass
 
-    def _on_finish(self):
+    def on_finish(self):
         pass
