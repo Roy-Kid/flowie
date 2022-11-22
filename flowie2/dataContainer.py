@@ -23,7 +23,7 @@ class Data(dict):
                 try:
                     f[key] = value
                 except TypeError as e:
-                    self.log.error(f'Error when dumping {key} to {path}')
+                    self.log.exception(f'Error when dumping {key} to {path}')
                     raise e
 
     def __str__(self):
