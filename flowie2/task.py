@@ -13,34 +13,37 @@ class Task(Executable):
         
         super().__init__(params, path, name, comment, isSave)
 
-        self._data = Data()
+        self.data = Data()
+        self.cache = {}
 
     def launch(self):
         
-        self.log.info(f'Task {self.name} is launching...')
+        self.log.info(f'Task {self.name} is launched')
 
         try:
             self.pre()
             self.run()
             self.post()
-        except:
+        except Exception as e:
             self.on_except()
+            self.log.error(f'Task {self.name} raise {type(e)}\n msg: {e}')
         finally:
             self.on_finish()
+            self.log.info(f'Task {self.name} is finished')
 
     def __getstate__(self):
-        return {k: v for k, v in self.__dict__.items() if k != '_data'}
+        return {k: v for k, v in self.__dict__.items() if k not in ['log', 'cache', 'data', ]}
 
     def run(self):
         raise NotImplementedError()
 
     def dump(self):
         super().dump()
-        self._data.dump(self.path)
+        self.data.dump(self.path)
 
     @classmethod
     def load(cls, path):
         ins = super().load(path)
-        ins._data = Data.load(path)
+        ins.data = Data.load(path)
         return ins
 
