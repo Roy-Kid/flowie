@@ -18,13 +18,13 @@ class Job(Executable):
         self.log.info(f'Job {self.name} is launching...')
 
         try:
-            self._pre()
-            self._run()
-            self._post()
+            self.pre()
+            self.run()
+            self.post()
         except:
-            self._on_except()
+            self.on_except()
         finally:
-            self._on_finish()
+            self.on_finish()
 
     def run(self):
 

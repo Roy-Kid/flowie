@@ -17,7 +17,7 @@ class Project(Executable):
         if exe_id not in self.exe:
             self.exe[exe_id] = exe
         else:
-            raise KeyError()
+            self.log.exception('duplicate adding exe')
         
     def launch(self):
         pass
