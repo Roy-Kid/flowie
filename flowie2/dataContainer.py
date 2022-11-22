@@ -9,6 +9,7 @@ from pathlib import Path
 from .viewer.tabulate import tabulate
 import glob
 import numpy as np
+from .typing import PathLike
 
 class Data(dict):
 
@@ -30,7 +31,7 @@ class Data(dict):
         return tabulate(self, headers=self.keys())
 
     @classmethod
-    def load(cls, path):
+    def load(cls, path: PathLike):
 
         ins = cls()
 
