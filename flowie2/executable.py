@@ -5,16 +5,18 @@
 
 import logging, pickle
 from pathlib import Path
+from .log import get_logger
+from .typing import PathLike
 
 class Executable:
 
-    def __init__(self, params:dict, path:str, name:str='', comment:str='', isSave:bool=True):
+    def __init__(self, params:dict, path:PathLike, name:str='', comment:str='', isSave:bool=True):
         self.TYPE = self.__class__.__name__
         self.params = params
         self.name = name if name else id(self)
         self.path = Path(path) / Path(f'{self.name}')
         self.comment = comment
-        self.log = logging.getLogger(self.TYPE)
+        self.log = get_logger(self.TYPE)
         if isSave:
             self.create_dir()
 
