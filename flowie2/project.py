@@ -4,8 +4,8 @@
 # version: 0.0.1
 
 from .executable import Executable
-from .typing import ParamLike, PathLike
-from .paramSpace import ParamSpace
+from .typing import PathLike
+from .paramSpace import ParamSpace, ParamLike
 
 class Project(Executable):
 

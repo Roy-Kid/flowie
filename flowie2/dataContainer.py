@@ -9,7 +9,7 @@ from pathlib import Path
 from .viewer.tabulate import tabulate
 import glob
 import numpy as np
-from .typing import PathLike
+from .typing import PathLike, Union, Dict
 
 class Data(dict):
 
@@ -56,3 +56,5 @@ class Data(dict):
                         ins[key] = np.array(value)
 
         return ins  
+
+DataLike = Union[Data, Dict]
