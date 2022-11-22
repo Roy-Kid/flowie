@@ -20,18 +20,18 @@ class Task(Executable):
         self.log.info(f'Task {self.name} is launching...')
 
         try:
-            self._pre()
-            self._run()
-            self._post()
+            self.pre()
+            self.run()
+            self.post()
         except:
-            self._on_except()
+            self.on_except()
         finally:
-            self._on_finish()
+            self.on_finish()
 
     def __getstate__(self):
         return {k: v for k, v in self.__dict__.items() if k != '_data'}
 
-    def _run(self):
+    def run(self):
         raise NotImplementedError()
 
     def dump(self):
