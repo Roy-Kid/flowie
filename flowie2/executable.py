@@ -12,7 +12,7 @@ class Executable:
         self.TYPE = self.__class__.__name__
         self.params = params
         self.name = name if name else id(self)
-        self.path = Path(path) / Path(f'{self.TYPE}_{self.name}')
+        self.path = Path(path) / Path(f'{self.name}')
         self.comment = comment
         self.log = logging.getLogger(self.TYPE)
         if isSave:
@@ -28,8 +28,8 @@ class Executable:
             pickle.dump(self, f)
 
     @classmethod
-    def load(cls, path:Path):
-        with open(path / Path(cls.__name__ + '.pkl'), 'rb') as f:
+    def load(cls, path_with_name:Path):
+        with open(path_with_name / Path(cls.__name__ + '.pkl'), 'rb') as f:
             return pickle.load(f)
 
     def launch(self):

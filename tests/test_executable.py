@@ -23,9 +23,13 @@ class TestExecutable:
 
         yield exe
 
+    def test_path(self, exe):
+        path = Path(__file__).parent
+        assert exe.path == Path(f'{path}/test')
+
     def test_name(self, exe):
 
-        assert exe.name == 'testexe'
+        assert exe.name == 'test'
         exe1 = Executable(params={}, path='')
         assert exe1.name == id(exe1)
 
