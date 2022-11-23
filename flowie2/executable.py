@@ -22,8 +22,8 @@ class Executable:
             self.create_dir()
 
     def create_dir(self):
-
         self.path.mkdir(parents=True, exist_ok=True)
+        self.log.info(f'mkdir {self.path}')
 
     def dump(self):
         
@@ -36,16 +36,19 @@ class Executable:
             return pickle.load(f)
 
     def launch(self):
-        pass
+        self.log.info(f'launching excutable {self.name}')
 
     def pre(self):
-        pass
+        self.log.info(f'pre-run excutable {self.name}')
 
     def post(self):
-        pass
+        self.log.info(f'post-run excutable {self.name}')
 
-    def on_except(self):
-        pass
+    def on_except(self, e):
+        self.log.exception(e)
 
     def on_finish(self):
         self.dump()
+
+    def run(self):
+        self.log.info(f'post-run excutable {self.name}')

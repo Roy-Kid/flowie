@@ -4,7 +4,7 @@
 # version: 0.0.1
 
 import pytest
-from flowie2 import Project, Job
+from flowie2 import Project, Job, Task
 
 class TestViewer:
 
@@ -15,8 +15,24 @@ class TestViewer:
             {'project1': 1}, '.', 'test_project'
         )
 
-        job_template = Job
-        # job_template.add_task()
+        class Task1(Task):
+            def run(self):
+                print('task1')
+                self.data['ans'] = 1
+
+        class Task2(Task):
+            def run(self):
+                print('task1')
+                self.data['ans'] = 2
+
+        Job.add_task(Task1)
+        Job.add_task(Task2)
 
         project.add_exe(Job)
+        project.launch()
         
+        yield project
+
+    def test_load_data(self, test_project):
+
+        pass

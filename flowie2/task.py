@@ -26,17 +26,12 @@ class Task(Executable):
             self.run()
             self.post()
         except Exception as e:
-            self.on_except()
-            self.log.error(f'Task {self.name} raise {type(e)}\n msg: {e}')
+            self.on_except(e)
         finally:
             self.on_finish()
-            self.log.info(f'Task {self.name} is finished')
 
     def __getstate__(self):
         return {k: v for k, v in self.__dict__.items() if k not in ['log', 'cache', 'data', ]}
-
-    def run(self):
-        self.log.info('run')
 
     def dump(self):
         super().dump()
