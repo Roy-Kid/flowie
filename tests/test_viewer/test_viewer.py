@@ -5,6 +5,7 @@
 
 import pytest
 from flowie2 import Project, Job, Task
+import shutil
 
 class TestViewer:
 
@@ -32,6 +33,9 @@ class TestViewer:
         project.launch()
         
         yield project
+
+        assert project.path.exists()
+        shutil.rmtree(project.path)
 
     def test_load_data(self, test_project):
 
