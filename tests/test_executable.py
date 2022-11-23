@@ -23,6 +23,8 @@ class TestExecutable:
 
         yield exe
 
+        shutil.rmtree(exe.path)
+
     def test_path(self, exe):
         path = Path(__file__).parent
         assert exe.path == Path(f'{path}/test')
@@ -46,5 +48,4 @@ class TestExecutable:
             exe = pickle.load(f)
             assert exe.comment == 'exe for test'
             assert exe.params == {'a': 1, 'b': [1, 2]}
-    
 
