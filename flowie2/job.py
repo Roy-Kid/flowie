@@ -32,8 +32,6 @@ class Job(Executable):
             task = task(self.params, self.path)
             task()
 
-
-
     def add_task(self, task):
 
         task_id = id(task)
