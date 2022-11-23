@@ -28,8 +28,8 @@ class Job(Executable, metaclass=MetaJob):
             self.pre()
             self.run()
             self.post()
-        except:
-            self.on_except()
+        except Exception as e:
+            self.on_except(e)
         finally:
             self.on_finish()
 
@@ -37,7 +37,7 @@ class Job(Executable, metaclass=MetaJob):
 
         for task in self.tasks:
             task = task(self.params, self.path)
-            task()
+            task.launch()
         
     @classmethod
     def add_task(cls, task:type[Task]):

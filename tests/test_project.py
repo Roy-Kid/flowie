@@ -3,9 +3,7 @@
 # date: 2022-11-22
 # version: 0.0.1
 
-from flowie2.project import Project
-from flowie2.task import Task
-from flowie2.paramSpace import ParamSpaceIterator
+from flowie2 import Project, Task, ParamSpaceIterator, Job
 from pathlib import Path
 import numpy as np
 import shutil
@@ -41,3 +39,27 @@ class TestProject:
         assert len(list(project.path.glob('**/Task.pkl'))) == 3 * 3
 
         shutil.rmtree(project.path)
+
+    def test_file_hierarchy(self):
+
+        project = Project(
+            {'project1': 1}, '.', 'test_project'
+        )
+
+        class Task1(Task):
+            def run(self):
+                print('task1')
+                self.data['ans'] = 1
+
+        class Task2(Task):
+            def run(self):
+                print('task1')
+                self.data['ans'] = 2
+
+        Job.add_task(Task1)
+        Job.add_task(Task2)
+
+        project.add_exe(Job)
+        project.launch()
+
+        
