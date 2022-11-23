@@ -4,14 +4,21 @@
 # version: 0.0.1
 
 from .executable import Executable
+from .typing import List
+from .task import Task
 
+class MetaJob(type):
 
-class Job(Executable):
+    def __new__(cls, clsname, bases, clsdict):
+        clsdict['tasks'] = []  # create tasks when define new Job class
+        return super().__new__(cls, clsname, bases, clsdict)
+
+class Job(Executable, metaclass=MetaJob):
+
+    tasks: List
 
     def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
         super().__init__(params, path, name, comment, isSave)
-
-        self.tasks = {}
 
     def launch(self):
         
@@ -28,15 +35,18 @@ class Job(Executable):
 
     def run(self):
 
-        for task in self.tasks.values():
+        for task in self.tasks:
             task = task(self.params, self.path)
             task()
-
-    def add_task(self, task):
-
-        task_id = id(task)
-        if task_id not in self.tasks:
-            self.tasks[task_id] = task
+        
+    @classmethod
+    def add_task(cls, task:type[Task]):
+        if task not in cls.tasks:
+            cls.tasks.append(task)
         else:
-            self.log.error(f'{task} duplicate adding')
             raise KeyError()
+
+    @classmethod
+    @property
+    def n_tasks(cls):
+        return len(cls.tasks)
