@@ -4,6 +4,7 @@
 # version: 0.0.1
 
 from flowie2.task import Task
+from flowie2.file import delete
 import numpy as np
 from pathlib import Path
 import shutil
@@ -21,6 +22,5 @@ class TestTask:
         assert another_task.params['a'] == 1
         assert another_task.data['b'] == 2
 
-        assert task.path.exists()
-        shutil.rmtree(task.path)
+        delete(task.path)
         

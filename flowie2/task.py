@@ -33,13 +33,12 @@ class Task(Executable):
     def __getstate__(self):
         return {k: v for k, v in self.__dict__.items() if k not in ['log', 'cache', 'data', ]}
 
-    def dump(self):
-        super().dump()
-        self.data.dump(self.path)
-
     @classmethod
     def load(cls, path):
         ins = super().load(path)
         ins.data = Data.load(path)
         return ins
 
+    def on_finish(self):
+        self.save()
+        self.data.dump(self.path)

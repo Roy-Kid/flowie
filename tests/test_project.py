@@ -4,6 +4,7 @@
 # version: 0.0.1
 
 from flowie2 import Project, Task, ParamSpaceIterator, Job
+from flowie2.file import delete
 from pathlib import Path
 import numpy as np
 import shutil
@@ -64,5 +65,4 @@ class TestProject:
         project.add_exe(Job)
         project.launch()
 
-        assert project.path.exists()
-        shutil.rmtree(project.path)
+        delete(project.path)

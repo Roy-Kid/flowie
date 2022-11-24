@@ -3,7 +3,7 @@
 # date: 2022-11-21
 # version: 0.0.1
 
-import logging, pickle
+import pickle
 from pathlib import Path
 from .log import get_logger
 from .typing import PathLike
@@ -18,14 +18,15 @@ class Executable:
         self.path = Path(path) / Path(f'{self.name}.{self.TYPE}')
         self.comment = comment
         self.log = get_logger(self.TYPE)
+        self.isSave = isSave
         if isSave:
-            self.create()
+            self.mkdir()
 
-    def create(self):
+    def mkdir(self):
         self.path.mkdir(parents=True, exist_ok=True)
         self.log.info(f'mkdir {self.path}')
 
-    def dump(self):
+    def serialize(self):
         
         with open(self.path / Path(self.TYPE + '.pkl'), 'wb') as f:
             pickle.dump(self, f)
@@ -34,6 +35,10 @@ class Executable:
     def load(cls, path_with_name:Path):
         with open(path_with_name / Path(cls.__name__ + '.pkl'), 'rb') as f:
             return pickle.load(f)
+        
+    def save(self):
+        if self.isSave and self.path.exists():
+            self.serialize()
 
     def launch(self):
         self.log.info(f'launching excutable {self.name}')
@@ -49,7 +54,6 @@ class Executable:
 
     def on_finish(self):
         self.log.info(f'finish excutable {self.name}')
-        self.dump()
 
     def run(self):
         self.log.info(f'post-run excutable {self.name}')
