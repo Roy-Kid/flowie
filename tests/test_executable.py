@@ -5,6 +5,7 @@
 
 import pytest
 from flowie2.executable import Executable
+from flowie2.file import delete
 from pathlib import Path
 import shutil
 import pickle
@@ -27,7 +28,7 @@ class TestExecutable:
 
     def test_path(self, exe):
         path = Path(__file__).parent
-        assert exe.path == Path(f'{path}/test')
+        assert exe.path == Path(f'{path}/test.Executable')
 
     def test_name(self, exe):
 
@@ -48,4 +49,3 @@ class TestExecutable:
             exe = pickle.load(f)
             assert exe.comment == 'exe for test'
             assert exe.params == {'a': 1, 'b': [1, 2]}
-

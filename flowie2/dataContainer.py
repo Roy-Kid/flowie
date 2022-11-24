@@ -4,7 +4,7 @@
 # version: 0.0.1
 
 import h5py
-import logging
+from .log import get_logger
 from pathlib import Path
 from .viewer.tabulate import tabulate
 import glob
@@ -13,7 +13,7 @@ from .typing import PathLike, Union, Dict
 
 class Data(dict):
 
-    log = logging.getLogger('Data')
+    log = get_logger('Data')
     # lastModifyTime etc.
 
     def dump(self, path:PathLike, format:str='hdf5'):

@@ -15,7 +15,7 @@ class TestTask:
         task = Task({'a': 1}, Path(__file__).parent, 'test', 'task for test')
         task.data['b'] = 2
         task.data['c'] = np.random.random((3, 5))
-        task.dump()
+        task.launch()
 
         another_task = Task.load(task.path)
         assert another_task.params['a'] == 1
