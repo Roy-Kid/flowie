@@ -41,4 +41,7 @@ class Task(Executable):
 
     def on_finish(self):
         self.save()
+
+    def save(self):
+        super().save()
         self.data.dump(self.path)
