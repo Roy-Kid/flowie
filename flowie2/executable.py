@@ -15,13 +15,13 @@ class Executable:
         self.TYPE = str(self.__class__.__name__)
         self.params = params
         self.name = name if name else id(self)
-        self.path = Path(path) / Path(f'{self.name}')
+        self.path = Path(path) / Path(f'{self.name}.{self.TYPE}')
         self.comment = comment
         self.log = get_logger(self.TYPE)
         if isSave:
-            self.create_dir()
+            self.create()
 
-    def create_dir(self):
+    def create(self):
         self.path.mkdir(parents=True, exist_ok=True)
         self.log.info(f'mkdir {self.path}')
 
@@ -48,6 +48,7 @@ class Executable:
         self.log.exception(e)
 
     def on_finish(self):
+        self.log.info(f'finish excutable {self.name}')
         self.dump()
 
     def run(self):

@@ -5,6 +5,7 @@
 
 from .typing import PathLike
 from pathlib import Path
+import shutil
 
 def delete(path: PathLike):
     """

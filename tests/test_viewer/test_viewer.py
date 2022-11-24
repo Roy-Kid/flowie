@@ -9,9 +9,8 @@ import shutil
 
 class TestViewer:
 
-    @pytest.fixture(name='test_project', scope='class')
-    def init_project(self):
-
+    def test_load(self):
+        
         project = Project(
             {'project1': 1}, '.', 'test_project'
         )
@@ -23,20 +22,26 @@ class TestViewer:
 
         class Task2(Task):
             def run(self):
-                print('task1')
+                print('task2')
                 self.data['ans'] = 2
 
-        Job.add_task(Task1)
-        Job.add_task(Task2)
+        class Task3(Task):
+            def run(self):
+                print('task3')
+                self.data['ans'] = 3
 
-        project.add_exe(Job)
-        project.launch()
+        class Job1(Job):
+            pass
+
+        class Job2(Job):
+            pass
+
+        Job1.add_task(Task1)
+        Job1.add_task(Task2)
+
+        Job2.add_task(Task3)
+
+        project.add_exe(Job1)
+        project.add_exe(Job2)
         
-        yield project
-
-        assert project.path.exists()
-        shutil.rmtree(project.path)
-
-    def test_load_data(self, test_project):
-
-        pass
+        # yield project

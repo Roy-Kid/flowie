@@ -35,10 +35,10 @@ def get_logger(name: str):
     logger = logging.getLogger(name)
     logger.setLevel(logging._nameToLevel[log_configs['level']])
 
-    streamHandler = logging.StreamHandler()
-    streamHandler.setFormatter(CustomFormatter())
+    # streamHandler = logging.StreamHandler()
+    # streamHandler.setFormatter(CustomFormatter())
     # streamHandler.setLevel()
-    logger.addHandler(streamHandler)
+    # logger.addHandler(streamHandler)
 
     # handler = logging.FileHandler(log_configs['path'])
     return logger
