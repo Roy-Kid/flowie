@@ -45,12 +45,9 @@ class Data(dict):
 
 DataLike = Union[Data, Dict]
 
-class DataViewer:
+class DataViewer(dict):
 
-    def __init__(self):
-
-        self.log = get_logger('DataViewer')
-        self._data = {}
+    log = get_logger('DataViewer')
 
     @classmethod
     def load(cls, path:PathLike, format:str='hdf5'):
@@ -81,9 +78,9 @@ class DataViewer:
             
             for p in path.iterdir():
                 dv = cls._recursive_load(p, format)
-                cls_ins._data[p.name] = dv
+                cls_ins[p.name] = dv
             
             for file in path.glob('*.hdf5'):
-                cls_ins._data[file.name] = Data.load(file, format)
+                cls_ins[file.name] = Data.load(file.parent, format)
 
         return cls_ins
