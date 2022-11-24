@@ -11,7 +11,7 @@ class TestViewer:
 
     def test_load(self):
         
-        project = Project(
+        project = Project('test', 
             {'project1': 1}, '.', 'test_project'
         )
 

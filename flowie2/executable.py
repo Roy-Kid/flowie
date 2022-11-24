@@ -7,14 +7,14 @@ import pickle
 from pathlib import Path
 from .log import get_logger
 from .typing import PathLike
-from .paramSpace import ParamLike
+from .paramSpace import ParamLike, ParamSpace
 
 class Executable:
 
     def __init__(self, params:ParamLike, path:PathLike, name:str='', comment:str='', isSave:bool=True):
         self.TYPE = str(self.__class__.__name__)
-        self.params = params
-        self.name = name if name else id(self)
+        self.params = ParamSpace(params)
+        self.name = name if name else self.params.guess_name()
         self.path = Path(path) / Path(f'{self.name}.{self.TYPE}')
         self.comment = comment
         self.log = get_logger(self.TYPE)
