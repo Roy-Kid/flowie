@@ -6,7 +6,7 @@
 import h5py
 from .log import get_logger
 from pathlib import Path
-from .viewer.tabulate import tabulate
+from .extra.tabulate import tabulate
 import glob
 import numpy as np
 from .typing import PathLike, Union, Dict
@@ -31,30 +31,59 @@ class Data(dict):
         return tabulate(self, headers=self.keys())
 
     @classmethod
-    def load(cls, path: PathLike):
+    def load(cls, path: PathLike, format:str='hdf5'):
 
         ins = cls()
 
-        path = Path(path)
-        if path.is_dir():
-            hdf5_list = glob.glob('*.hdf5', root_dir=path)
-
-            if not len(hdf5_list):
-                msg = f'no hdf5 file found, or {path} is not a job path'
-                ins.log.error(msg)
-                raise FileNotFoundError(msg)
-            for hf in hdf5_list:
-
-                with h5py.File(path/Path(hf)) as f:
-                    for key, value in f.items():
-                        ins[key] = np.array(value)
-            return ins
-        elif path.is_file():
-
-                with h5py.File(path) as f:
-                    for key, value in f.items():
-                        ins[key] = np.array(value)
+        if format == 'hdf5':
+            read_from = Path(path)/Path('data.hdf5')
+            with h5py.File(read_from, 'r') as f:
+                for key in f.keys():
+                    ins[key] = np.array(f[key])
 
         return ins  
 
 DataLike = Union[Data, Dict]
+
+class DataViewer:
+
+    def __init__(self):
+
+        self.log = get_logger('DataViewer')
+        self._data = {}
+
+    @classmethod
+    def load(cls, path:PathLike, format:str='hdf5'):
+
+        return DataViewer._recursive_load(path, format)
+
+    @classmethod
+    def _recursive_load(cls, path:PathLike, format:str='hdf5'):
+        """
+        Recursively load data from path.
+
+        Parameters
+        ----------
+        path : PathLike
+            _description_
+        format : str, optional
+            _description_, by default 'hdf5'
+
+        Returns
+        -------
+        DataViewer
+            _description_
+        """
+        path = Path(path)
+        cls_ins = cls()
+        # We assume that only the final folder contains data.
+        if path.is_dir():
+            
+            for p in path.iterdir():
+                dv = cls._recursive_load(p, format)
+                cls_ins._data[p.name] = dv
+            
+            for file in path.glob('*.hdf5'):
+                cls_ins._data[file.name] = Data.load(file, format)
+
+        return cls_ins
