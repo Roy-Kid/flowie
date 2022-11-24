@@ -44,8 +44,7 @@ class TestExecutable:
         
     def test_dump(self, exe):
 
-        exe.dump()
-        with open(Path(exe.path)/'Executable.pkl', 'rb') as f:
-            exe = pickle.load(f)
-            assert exe.comment == 'exe for test'
-            assert exe.params == {'a': 1, 'b': [1, 2]}
+        exe.serialize()
+        expect_exe = Executable.load(exe.path)
+        assert expect_exe.comment == 'exe for test'
+        assert expect_exe.params == {'a': 1, 'b': [1, 2]}

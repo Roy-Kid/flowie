@@ -15,7 +15,7 @@ class MetaJob(type):
 
 class Job(Executable, metaclass=MetaJob):
 
-    tasks: List
+    tasks: List[type[Task]]
 
     def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
         super().__init__(params, path, name, comment, isSave)
