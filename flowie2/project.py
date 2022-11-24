@@ -11,7 +11,7 @@ class Project(Executable):
 
     params: ParamSpace
 
-    def __init__(self, params: ParamLike, path: PathLike, name: str = '', comment: str = '', isSave: bool = True):
+    def __init__(self, name, params: ParamLike, path: PathLike, comment: str = '', isSave: bool = True):
         super().__init__(ParamSpace(params), path, name, comment, isSave)
 
         self.exe = {}

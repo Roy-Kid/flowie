@@ -33,8 +33,8 @@ class TestExecutable:
     def test_name(self, exe):
 
         assert exe.name == 'test'
-        exe1 = Executable(params={}, path='')
-        assert exe1.name == id(exe1)
+        exe1 = Executable(params={}, path='', name='test_exe')
+        assert exe1.name == 'test_exe'
 
     def test_create_dir(self, exe):
 
