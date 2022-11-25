@@ -11,6 +11,7 @@ import numpy.testing as npt
 import pytest
 import os
 
+
 class Task1(Task):
     def run(self):
         print("task1")
