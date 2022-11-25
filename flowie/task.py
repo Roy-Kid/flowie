@@ -61,3 +61,7 @@ class Task(Executable):
     def save(self):
         super().save()
         self.data.dump(self.path)
+
+    def recieve_cache(self, cache):
+
+        self.cache.update(cache)

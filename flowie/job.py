@@ -28,6 +28,9 @@ class Job(Executable, metaclass=MetaJob):
     ):
         super().__init__(params, path, name, comment, isSave)
 
+        # An ugly way to share info between Job and its tasks
+        self.cache = {}
+
     def launch(self):
 
         self.log.info(f"Job {self.name} is launching...")
@@ -45,6 +48,7 @@ class Job(Executable, metaclass=MetaJob):
 
         for task in self.tasks:
             task = task(self.params, self.path)
+            task.recieve_cache(self.cache)
             task.launch()
 
     @classmethod
@@ -53,6 +57,8 @@ class Job(Executable, metaclass=MetaJob):
             cls.tasks.append(task)
         else:
             raise KeyError()
+        
+        return cls
 
     @classmethod
     @property
