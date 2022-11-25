@@ -39,7 +39,6 @@ class Job2(Job):
 
 
 class TestDataViewer:
-
     def test_load(self):
 
         project = Project(

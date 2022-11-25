@@ -12,7 +12,6 @@ import pickle
 
 
 class TestExecutable:
-    
     @pytest.fixture(name="exe", scope="class")
     def init_exe(self):
 

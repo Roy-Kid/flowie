@@ -13,7 +13,7 @@ import shutil
 class TestTask:
     def test_dump(self):
 
-        task = Task({"a": 1}, '.', "test", "task for test")
+        task = Task({"a": 1}, ".", "test", "task for test")
         task.data["b"] = 2
         task.data["c"] = np.random.random((3, 5))
         task.launch()
@@ -21,4 +21,3 @@ class TestTask:
         another_task = Task.load(task.path)
         assert another_task.params["a"] == 1
         assert another_task.data["b"] == 2
-

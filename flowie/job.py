@@ -57,7 +57,7 @@ class Job(Executable, metaclass=MetaJob):
             cls.tasks.append(task)
         else:
             raise KeyError()
-        
+
         return cls
 
     @classmethod

@@ -9,12 +9,3 @@ import logging
 class Configs(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
-configs = Configs(
-    {
-        "log": {
-            "level": "DEBUG",
-        }
-    }
-)

@@ -62,4 +62,3 @@ class TestProject:
 
         project.add_exe(Job)
         project.launch()
-
