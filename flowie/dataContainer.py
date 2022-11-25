@@ -23,6 +23,8 @@ class Data(dict):
         with h5py.File(write_to, "a") as f:
             for key, value in self.items():
                 try:
+                    if key in f:
+                        del f[key]
                     f[key] = value
                 except TypeError as e:
                     self.log.exception(f"Error when dumping {key} to {path}")
@@ -57,7 +59,6 @@ class DataViewer(dict):
 
         cls_ins = DataViewer._recursive_load(path, format)
         setattr(cls_ins, 'path', Path(path))
-        # cls_ins.__annotations__.update({'path': 'path where data is loaded'})
         return cls_ins
 
     @classmethod
