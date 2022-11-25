@@ -12,30 +12,29 @@ import pickle
 
 
 class TestExecutable:
+    
     @pytest.fixture(name="exe", scope="class")
     def init_exe(self):
 
         path = Path(__file__).parent
         exe = Executable(
             params={"a": 1, "b": [1, 2]},
-            name="test",
+            name="TestExcutable",
             path=path,
             comment="exe for test",
         )
 
         yield exe
 
-        shutil.rmtree(exe.path)
+        delete(exe.path)
 
     def test_path(self, exe):
         path = Path(__file__).parent
-        assert exe.path == Path(f"{path}/test.Executable")
+        assert exe.path == Path(f"{path}/{exe.name}.Executable")
 
     def test_name(self, exe):
 
-        assert exe.name == "test"
-        exe1 = Executable(params={}, path="", name="test_exe")
-        assert exe1.name == "test_exe"
+        assert exe.name == "TestExcutable"
 
     def test_create_dir(self, exe):
 

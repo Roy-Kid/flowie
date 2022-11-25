@@ -24,8 +24,6 @@ class TestProject:
             another_task = Task.load(task.parent)
             assert another_task.params == {"a": [1, 2, 3]}
 
-        delete(project.path)
-
     def test_auto_expand_paramspace(self):
 
         project = Project(
@@ -65,4 +63,3 @@ class TestProject:
         project.add_exe(Job)
         project.launch()
 
-        delete(project.path)
