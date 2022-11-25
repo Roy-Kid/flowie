@@ -5,27 +5,27 @@
 
 from .typing import Iterable, List, Union, Dict
 
-class ParamSpaceIterator:
 
-    def __init__(self, Iterable:Iterable):
+class ParamSpaceIterator:
+    def __init__(self, Iterable: Iterable):
         self.iterable = iter(Iterable)
 
     def __iter__(self):
         return self.iterable
-    
+
     def __next__(self):
         return next(self.iterable)
 
-class ParamSpace(dict):
 
+class ParamSpace(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def __iter__(self):
 
         return iter(self.expand())
-    
-    def expand(self)->List:
+
+    def expand(self) -> List:
 
         iters = {}
         scalars = {}
@@ -55,17 +55,17 @@ class ParamSpace(dict):
                         tmp.append(ps)
 
                 return tmp
-            
+
         tmp = _expand(iters)
-          
+
         for t in tmp:
             t.update(scalars)
 
         return tmp
-    
+
     def __len__(self):
         return len(self.expand())
-    
+
     def guess_name(self):
         """
         guess the name of this param space. This method should be called in a SIMPLE paramSpace, which do not contain any paramSpaceIterator.
@@ -79,16 +79,20 @@ class ParamSpace(dict):
         for k, v in self.items():
             # v can not be ParamSpaceIterator
             if isinstance(v, ParamSpaceIterator):
-                raise ValueError('Can not guess name from a paramSpace which contains ParamSpaceIterator')
+                raise ValueError(
+                    "Can not guess name from a paramSpace which contains ParamSpaceIterator"
+                )
             try:
                 str_k = str(k)
                 str_V = str(v)
             except:
-                raise ValueError(f'Can not guess name from a paramSpace which contains non-str key or value, which is {k} and {v}')
-            
+                raise ValueError(
+                    f"Can not guess name from a paramSpace which contains non-str key or value, which is {k} and {v}"
+                )
+
             tmp[str_k] = str_V
 
-        return '_'.join([f'{k}={v}' for k, v in tmp.items()])
+        return "_".join([f"{k}={v}" for k, v in tmp.items()])
 
-    
+
 ParamLike = Union[Dict, ParamSpace]

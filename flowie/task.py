@@ -8,18 +8,25 @@ from pathlib import Path
 from .dataContainer import Data
 from .typing import PathLike
 
+
 class Task(Executable):
-    
-    def __init__(self, params: dict, path: PathLike, name: str = '', comment: str = '', isSave: bool = True):
-        
+    def __init__(
+        self,
+        params: dict,
+        path: PathLike,
+        name: str = "",
+        comment: str = "",
+        isSave: bool = True,
+    ):
+
         super().__init__(params, path, name, comment, isSave)
 
         self.data = Data()
         self.cache = {}
 
     def launch(self):
-        
-        self.log.info(f'Task {self.name} is launched')
+
+        self.log.info(f"Task {self.name} is launched")
 
         try:
             self.pre()
@@ -31,7 +38,16 @@ class Task(Executable):
             self.on_finish()
 
     def __getstate__(self):
-        return {k: v for k, v in self.__dict__.items() if k not in ['log', 'cache', 'data', ]}
+        return {
+            k: v
+            for k, v in self.__dict__.items()
+            if k
+            not in [
+                "log",
+                "cache",
+                "data",
+            ]
+        }
 
     @classmethod
     def load(cls, path):

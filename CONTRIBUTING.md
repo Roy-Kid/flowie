@@ -1,6 +1,6 @@
 # How to develop on this project
 
-flowie2 welcomes contributions from the community.
+flowie welcomes contributions from the community.
 
 **You need PYTHON3!**
 
@@ -8,9 +8,9 @@ This instructions are for linux base systems. (Linux, MacOS, BSD, etc.)
 ## Setting up your own fork of this repo.
 
 - On github interface click on `Fork` button.
-- Clone your fork of this repo. `git clone git@github.com:YOUR_GIT_USERNAME/flowie2.git`
-- Enter the directory `cd flowie2`
-- Add upstream repo `git remote add upstream https://github.com/Roy-Kid/flowie2`
+- Clone your fork of this repo. `git clone git@github.com:YOUR_GIT_USERNAME/flowie.git`
+- Enter the directory `cd flowie`
+- Add upstream repo `git remote add upstream https://github.com//flowie`
 
 ## Setting up your own virtual environment
 

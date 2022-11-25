@@ -130,7 +130,9 @@ def _pipe_line_with_colons(colwidths, colaligns):
     alignment (as in `pipe` output format)."""
     if not colaligns:  # e.g. printing an empty data frame (github issue #15)
         colaligns = [""] * len(colwidths)
-    segments = [_pipe_segment_with_colons(a, w) for a, w in zip(colaligns, colwidths)]
+    segments = [
+        _pipe_segment_with_colons(a, w) for a, w in zip(colaligns, colwidths)
+    ]
     return "|" + "|".join(segments) + "|"
 
 
@@ -144,7 +146,8 @@ def _mediawiki_row_with_attrs(separator, cell_values, colwidths, colaligns):
     # hard-coded padding _around_ align attribute and value together
     # rather than padding parameter which affects only the value
     values_with_attrs = [
-        " " + alignment.get(a, "") + c + " " for c, a in zip(cell_values, colaligns)
+        " " + alignment.get(a, "") + c + " "
+        for c, a in zip(cell_values, colaligns)
     ]
     colsep = separator * 2
     return (separator + colsep.join(values_with_attrs)).rstrip()
@@ -176,7 +179,9 @@ def _html_row_with_attrs(celltag, unsafe, cell_values, colwidths, colaligns):
         ]
     else:
         values_with_attrs = [
-            "<{0}{1}>{2}</{0}>".format(celltag, alignment.get(a, ""), htmlescape(c))
+            "<{0}{1}>{2}</{0}>".format(
+                celltag, alignment.get(a, ""), htmlescape(c)
+            )
             for c, a in zip(cell_values, colaligns)
         ]
     rowhtml = "<tr>{}</tr>".format("".join(values_with_attrs).rstrip())
@@ -185,7 +190,9 @@ def _html_row_with_attrs(celltag, unsafe, cell_values, colwidths, colaligns):
     return rowhtml
 
 
-def _moin_row_with_attrs(celltag, cell_values, colwidths, colaligns, header=""):
+def _moin_row_with_attrs(
+    celltag, cell_values, colwidths, colaligns, header=""
+):
     alignment = {
         "left": "",
         "right": '<style="text-align: right;">',
@@ -199,7 +206,9 @@ def _moin_row_with_attrs(celltag, cell_values, colwidths, colaligns, header=""):
     return "".join(values_with_attrs) + "||"
 
 
-def _latex_line_begin_tabular(colwidths, colaligns, booktabs=False, longtable=False):
+def _latex_line_begin_tabular(
+    colwidths, colaligns, booktabs=False, longtable=False
+):
     alignment = {"left": "l", "right": "r", "center": "c", "decimal": "r"}
     tabular_columns_fmt = "".join([alignment.get(a, "l") for a in colaligns])
     return "\n".join(
@@ -224,7 +233,8 @@ def _asciidoc_row(is_header, *args):
             colwidths, [alignment[colalign] for colalign in colaligns]
         )
         asciidoc_column_specifiers = [
-            "{:d}{}".format(width, align) for width, align in asciidoc_alignments
+            "{:d}{}".format(width, align)
+            for width, align in asciidoc_alignments
         ]
         header_list = ['cols="' + (",".join(asciidoc_column_specifiers)) + '"']
 
@@ -254,7 +264,9 @@ def _asciidoc_row(is_header, *args):
         data_line = "|" + "|".join(cell_values)
 
         if is_header:
-            return make_header_line(True, colwidths, colaligns) + "\n" + data_line
+            return (
+                make_header_line(True, colwidths, colaligns) + "\n" + data_line
+            )
         else:
             return data_line
 
@@ -874,7 +886,8 @@ def _isint(string, inttype=int):
             and str(type(string)).startswith("<class 'numpy.int")
         )  # numpy.int64 and similar
         or (
-            isinstance(string, (bytes, str)) and _isconvertible(inttype, string)
+            isinstance(string, (bytes, str))
+            and _isconvertible(inttype, string)
         )  # integer as string
     )
 
@@ -1074,7 +1087,10 @@ def _align_column_choose_padfn(strings, alignment, has_invisible):
         else:
             decimals = [_afterpoint(s) for s in strings]
         maxdecimals = max(decimals)
-        strings = [s + (maxdecimals - decs) * " " for s, decs in zip(strings, decimals)]
+        strings = [
+            s + (maxdecimals - decs) * " "
+            for s, decs in zip(strings, decimals)
+        ]
         padfn = _padleft
     elif not alignment:
         padfn = _padnone
@@ -1085,7 +1101,9 @@ def _align_column_choose_padfn(strings, alignment, has_invisible):
     return strings, padfn
 
 
-def _align_column_choose_width_fn(has_invisible, enable_widechars, is_multiline):
+def _align_column_choose_width_fn(
+    has_invisible, enable_widechars, is_multiline
+):
     if has_invisible:
         line_width_fn = _visible_width
     elif enable_widechars:  # optional wide-character support if available
@@ -1093,7 +1111,9 @@ def _align_column_choose_width_fn(has_invisible, enable_widechars, is_multiline)
     else:
         line_width_fn = len
     if is_multiline:
-        width_fn = lambda s: _align_column_multiline_width(s, line_width_fn)  # noqa
+        width_fn = lambda s: _align_column_multiline_width(
+            s, line_width_fn
+        )  # noqa
     else:
         width_fn = line_width_fn
     return width_fn
@@ -1124,7 +1144,9 @@ def _align_column(
     is_multiline=False,
 ):
     """[string] -> [padded_string]"""
-    strings, padfn = _align_column_choose_padfn(strings, alignment, has_invisible)
+    strings, padfn = _align_column_choose_padfn(
+        strings, alignment, has_invisible
+    )
     width_fn = _align_column_choose_width_fn(
         has_invisible, enable_widechars, is_multiline
     )
@@ -1140,7 +1162,9 @@ def _align_column(
             ]
         else:
             # enable wide-character width corrections
-            s_lens = [[len(s) for s in re.split("[\r\n]", ms)] for ms in strings]
+            s_lens = [
+                [len(s) for s in re.split("[\r\n]", ms)] for ms in strings
+            ]
             visible_widths = [
                 [maxwidth - (w - l) for w, l in zip(mw, ml)]
                 for mw, ml in zip(s_widths, s_lens)
@@ -1148,7 +1172,9 @@ def _align_column(
             # wcswidth and _visible_width don't count invisible characters;
             # padfn doesn't need to apply another correction
             padded_strings = [
-                "\n".join([padfn(w, s) for s, w in zip((ms.splitlines() or ms), mw)])
+                "\n".join(
+                    [padfn(w, s) for s, w in zip((ms.splitlines() or ms), mw)]
+                )
                 for ms, mw in zip(strings, visible_widths)
             ]
     else:  # single-line cell values
@@ -1157,10 +1183,14 @@ def _align_column(
         else:
             # enable wide-character width corrections
             s_lens = list(map(len, strings))
-            visible_widths = [maxwidth - (w - l) for w, l in zip(s_widths, s_lens)]
+            visible_widths = [
+                maxwidth - (w - l) for w, l in zip(s_widths, s_lens)
+            ]
             # wcswidth and _visible_width don't count invisible characters;
             # padfn doesn't need to apply another correction
-            padded_strings = [padfn(w, s) for s, w in zip(strings, visible_widths)]
+            padded_strings = [
+                padfn(w, s) for s, w in zip(strings, visible_widths)
+            ]
     return padded_strings
 
 
@@ -1254,7 +1284,8 @@ def _align_header(
     if is_multiline:
         header_lines = re.split(_multiline_codes, header)
         padded_lines = [
-            _align_header(h, alignment, width, width_fn(h)) for h in header_lines
+            _align_header(h, alignment, width, width_fn(h))
+            for h in header_lines
         ]
         return "\n".join(padded_lines)
     # else: not multiline
@@ -1378,12 +1409,16 @@ def _normalize_tabular_data(tabular_data, headers, showindex="default"):
                     keys[:0] = tabular_data.index.name
                 else:
                     keys[:0] = [tabular_data.index.name]
-            vals = tabular_data.values  # values matrix doesn't need to be transposed
+            vals = (
+                tabular_data.values
+            )  # values matrix doesn't need to be transposed
             # for DataFrames add an index per default
             index = list(tabular_data.index)
             rows = [list(row) for row in vals]
         else:
-            raise ValueError("tabular data doesn't appear to be a dict or a DataFrame")
+            raise ValueError(
+                "tabular data doesn't appear to be a dict or a DataFrame"
+            )
 
         if headers == "keys":
             headers = list(map(str, keys))  # headers should be strings
@@ -1409,7 +1444,11 @@ def _normalize_tabular_data(tabular_data, headers, showindex="default"):
         ):
             # namedtuple
             headers = list(map(str, rows[0]._fields))
-        elif len(rows) > 0 and hasattr(rows[0], "keys") and hasattr(rows[0], "values"):
+        elif (
+            len(rows) > 0
+            and hasattr(rows[0], "keys")
+            and hasattr(rows[0], "values")
+        ):
             # dict-like object
             uniq_keys = set()  # implements hashed lookup
             keys = []  # storage for set
@@ -1491,11 +1530,15 @@ def _normalize_tabular_data(tabular_data, headers, showindex="default"):
         rows = _prepend_row_index(rows, list(showindex))
     elif isinstance(showindex, Iterable) and not showindex_is_a_str:
         rows = _prepend_row_index(rows, showindex)
-    elif showindex == "always" or (_bool(showindex) and not showindex_is_a_str):
+    elif showindex == "always" or (
+        _bool(showindex) and not showindex_is_a_str
+    ):
         if index is None:
             index = list(range(len(rows)))
         rows = _prepend_row_index(rows, index)
-    elif showindex == "never" or (not _bool(showindex) and not showindex_is_a_str):
+    elif showindex == "never" or (
+        not _bool(showindex) and not showindex_is_a_str
+    ):
         pass
 
     # pad with empty headers for initial columns if necessary
@@ -1530,7 +1573,9 @@ def _wrap_text_to_colwidths(list_of_lists, colwidths, numparses=True):
                 # Any future custom formatting of types (such as datetimes)
                 # may need to be more explicit than just `str` of the object
                 casted_cell = (
-                    str(cell) if _isnumber(cell) else _type(cell, numparse)(cell)
+                    str(cell)
+                    if _isnumber(cell)
+                    else _type(cell, numparse)(cell)
                 )
                 wrapped = [
                     "\n".join(wrapper.wrap(line))
@@ -2077,7 +2122,9 @@ def tabulate(
         else:
             num_cols = 0
         if isinstance(maxcolwidths, int):  # Expand scalar for all columns
-            maxcolwidths = _expand_iterable(maxcolwidths, num_cols, maxcolwidths)
+            maxcolwidths = _expand_iterable(
+                maxcolwidths, num_cols, maxcolwidths
+            )
         else:  # Ignore col width for any 'trailing' columns
             maxcolwidths = _expand_iterable(maxcolwidths, num_cols, None)
 
@@ -2088,12 +2135,16 @@ def tabulate(
 
     if maxheadercolwidths is not None:
         num_cols = len(list_of_lists[0])
-        if isinstance(maxheadercolwidths, int):  # Expand scalar for all columns
+        if isinstance(
+            maxheadercolwidths, int
+        ):  # Expand scalar for all columns
             maxheadercolwidths = _expand_iterable(
                 maxheadercolwidths, num_cols, maxheadercolwidths
             )
         else:  # Ignore col width for any 'trailing' columns
-            maxheadercolwidths = _expand_iterable(maxheadercolwidths, num_cols, None)
+            maxheadercolwidths = _expand_iterable(
+                maxheadercolwidths, num_cols, None
+            )
 
         numparses = _expand_numparse(disable_numparse, num_cols)
         headers = _wrap_text_to_colwidths(
@@ -2103,7 +2154,9 @@ def tabulate(
     # empty values in the first column of RST tables should be escaped (issue #82)
     # "" should be escaped as "\\ " or ".."
     if tablefmt == "rst":
-        list_of_lists, headers = _rst_escape_first_column(list_of_lists, headers)
+        list_of_lists, headers = _rst_escape_first_column(
+            list_of_lists, headers
+        )
 
     # PrettyTable formatting does not use any extra padding.
     # Numbers are not parsed and are treated the same as strings for alignment.
@@ -2151,7 +2204,9 @@ def tabulate(
     # format rows and columns, convert numeric values to strings
     cols = list(izip_longest(*list_of_lists))
     numparses = _expand_numparse(disable_numparse, len(cols))
-    coltypes = [_column_type(col, numparse=np) for col, np in zip(cols, numparses)]
+    coltypes = [
+        _column_type(col, numparse=np) for col, np in zip(cols, numparses)
+    ]
     if isinstance(floatfmt, str):  # old version
         float_formats = len(cols) * [
             floatfmt
@@ -2159,7 +2214,9 @@ def tabulate(
     else:  # if floatfmt is list, tuple etc we have one per column
         float_formats = list(floatfmt)
         if len(float_formats) < len(cols):
-            float_formats.extend((len(cols) - len(float_formats)) * [_DEFAULT_FLOATFMT])
+            float_formats.extend(
+                (len(cols) - len(float_formats)) * [_DEFAULT_FLOATFMT]
+            )
     if isinstance(intfmt, str):  # old version
         int_formats = len(cols) * [
             intfmt
@@ -2167,13 +2224,17 @@ def tabulate(
     else:  # if intfmt is list, tuple etc we have one per column
         int_formats = list(intfmt)
         if len(int_formats) < len(cols):
-            int_formats.extend((len(cols) - len(int_formats)) * [_DEFAULT_INTFMT])
+            int_formats.extend(
+                (len(cols) - len(int_formats)) * [_DEFAULT_INTFMT]
+            )
     if isinstance(missingval, str):
         missing_vals = len(cols) * [missingval]
     else:
         missing_vals = list(missingval)
         if len(missing_vals) < len(cols):
-            missing_vals.extend((len(cols) - len(missing_vals)) * [_DEFAULT_MISSINGVAL])
+            missing_vals.extend(
+                (len(cols) - len(missing_vals)) * [_DEFAULT_MISSINGVAL]
+            )
     cols = [
         [_format(v, ct, fl_fmt, int_fmt, miss_v, has_invisible) for v in c]
         for c, ct, fl_fmt, int_fmt, miss_v in zip(
@@ -2188,10 +2249,14 @@ def tabulate(
         for idx, align in enumerate(colalign):
             aligns[idx] = align
     minwidths = (
-        [width_fn(h) + min_padding for h in headers] if headers else [0] * len(cols)
+        [width_fn(h) + min_padding for h in headers]
+        if headers
+        else [0] * len(cols)
     )
     cols = [
-        _align_column(c, a, minw, has_invisible, enable_widechars, is_multiline)
+        _align_column(
+            c, a, minw, has_invisible, enable_widechars, is_multiline
+        )
         for c, a, minw in zip(cols, aligns, minwidths)
     ]
 
@@ -2220,7 +2285,13 @@ def tabulate(
     _reinsert_separating_lines(rows, separating_lines)
 
     return _format_table(
-        tablefmt, headers, rows, minwidths, aligns, is_multiline, rowaligns=rowaligns
+        tablefmt,
+        headers,
+        rows,
+        minwidths,
+        aligns,
+        is_multiline,
+        rowaligns=rowaligns,
     )
 
 
@@ -2280,13 +2351,17 @@ def _build_row(padded_cells, colwidths, colaligns, rowfmt):
         return _build_simple_row(padded_cells, rowfmt)
 
 
-def _append_basic_row(lines, padded_cells, colwidths, colaligns, rowfmt, rowalign=None):
+def _append_basic_row(
+    lines, padded_cells, colwidths, colaligns, rowfmt, rowalign=None
+):
     # NOTE: rowalign is ignored and exists for api compatibility with _append_multiline_row
     lines.append(_build_row(padded_cells, colwidths, colaligns, rowfmt))
     return lines
 
 
-def _align_cell_veritically(text_lines, num_lines, column_width, row_alignment):
+def _align_cell_veritically(
+    text_lines, num_lines, column_width, row_alignment
+):
     delta_lines = num_lines - len(text_lines)
     blank = [" " * column_width]
     if row_alignment == "bottom":
@@ -2300,7 +2375,13 @@ def _align_cell_veritically(text_lines, num_lines, column_width, row_alignment):
 
 
 def _append_multiline_row(
-    lines, padded_multiline_cells, padded_widths, colaligns, rowfmt, pad, rowalign=None
+    lines,
+    padded_multiline_cells,
+    padded_widths,
+    colaligns,
+    rowfmt,
+    pad,
+    rowalign=None,
 ):
     colwidths = [w - 2 * pad for w in padded_widths]
     cells_lines = [c.splitlines() for c in padded_multiline_cells]
@@ -2351,7 +2432,9 @@ class JupyterHTMLStr(str):
         return self
 
 
-def _format_table(fmt, headers, rows, colwidths, colaligns, is_multiline, rowaligns):
+def _format_table(
+    fmt, headers, rows, colwidths, colaligns, is_multiline, rowaligns
+):
     """Produce a plain-text representation of the table."""
     lines = []
     hidden = fmt.with_header_hide if (headers and fmt.with_header_hide) else []
@@ -2360,7 +2443,9 @@ def _format_table(fmt, headers, rows, colwidths, colaligns, is_multiline, rowali
 
     padded_widths = [(w + 2 * pad) for w in colwidths]
     if is_multiline:
-        pad_row = lambda row, _: row  # noqa do it later, in _append_multiline_row
+        pad_row = (
+            lambda row, _: row
+        )  # noqa do it later, in _append_multiline_row
         append_row = partial(_append_multiline_row, pad=pad)
     else:
         pad_row = _pad_row
@@ -2381,7 +2466,12 @@ def _format_table(fmt, headers, rows, colwidths, colaligns, is_multiline, rowali
         # initial rows with a line below
         for row, ralign in zip(padded_rows[:-1], rowaligns):
             append_row(
-                lines, row, padded_widths, colaligns, fmt.datarow, rowalign=ralign
+                lines,
+                row,
+                padded_widths,
+                colaligns,
+                fmt.datarow,
+                rowalign=ralign,
             )
             _append_line(lines, padded_widths, colaligns, fmt.linebetweenrows)
         # the last row without a line below
@@ -2453,7 +2543,8 @@ class _CustomTextWrap(textwrap.TextWrapper):
         """
         code_matches = [x for x in _ansi_codes.finditer(new_line)]
         color_codes = [
-            code.string[code.span()[0] : code.span()[1]] for code in code_matches
+            code.string[code.span()[0] : code.span()[1]]
+            for code in code_matches
         ]
 
         # Add color codes from earlier in the unwrapped line, and then track any new ones we add.
@@ -2530,7 +2621,10 @@ class _CustomTextWrap(textwrap.TextWrapper):
                 indent = self.subsequent_indent
             else:
                 indent = self.initial_indent
-            if self._len(indent) + self._len(self.placeholder.lstrip()) > self.width:
+            if (
+                self._len(indent) + self._len(self.placeholder.lstrip())
+                > self.width
+            ):
                 raise ValueError("placeholder too large for max width")
 
         # Arrange in reverse order so items can be efficiently popped
@@ -2577,7 +2671,11 @@ class _CustomTextWrap(textwrap.TextWrapper):
                 cur_len = sum(map(self._len, cur_line))
 
             # If the last chunk on this line is all whitespace, drop it.
-            if self.drop_whitespace and cur_line and cur_line[-1].strip() == "":
+            if (
+                self.drop_whitespace
+                and cur_line
+                and cur_line[-1].strip() == ""
+            ):
                 cur_len -= self._len(cur_line[-1])
                 del cur_line[-1]
 
@@ -2603,7 +2701,9 @@ class _CustomTextWrap(textwrap.TextWrapper):
                             and cur_len + self._len(self.placeholder) <= width
                         ):
                             cur_line.append(self.placeholder)
-                            self._update_lines(lines, indent + "".join(cur_line))
+                            self._update_lines(
+                                lines, indent + "".join(cur_line)
+                            )
                             break
                         cur_len -= self._len(cur_line[-1])
                         del cur_line[-1]
@@ -2611,12 +2711,15 @@ class _CustomTextWrap(textwrap.TextWrapper):
                         if lines:
                             prev_line = lines[-1].rstrip()
                             if (
-                                self._len(prev_line) + self._len(self.placeholder)
+                                self._len(prev_line)
+                                + self._len(self.placeholder)
                                 <= self.width
                             ):
                                 lines[-1] = prev_line + self.placeholder
                                 break
-                        self._update_lines(lines, indent + self.placeholder.lstrip())
+                        self._update_lines(
+                            lines, indent + self.placeholder.lstrip()
+                        )
                     break
 
         return lines
@@ -2655,7 +2758,16 @@ def _main():
         opts, args = getopt.getopt(
             sys.argv[1:],
             "h1o:s:F:A:f:",
-            ["help", "header", "output", "sep=", "float=", "int=", "align=", "format="],
+            [
+                "help",
+                "header",
+                "output",
+                "sep=",
+                "float=",
+                "int=",
+                "align=",
+                "format=",
+            ],
         )
     except getopt.GetoptError as e:
         print(e)
@@ -2720,7 +2832,9 @@ def _main():
                     )
 
 
-def _pprint_file(fobject, headers, tablefmt, sep, floatfmt, intfmt, file, colalign):
+def _pprint_file(
+    fobject, headers, tablefmt, sep, floatfmt, intfmt, file, colalign
+):
     rows = fobject.readlines()
     table = [re.split(sep, r.rstrip()) for r in rows if r.strip()]
     print(
