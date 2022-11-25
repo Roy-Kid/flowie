@@ -47,7 +47,7 @@ class Job(Executable, metaclass=MetaJob):
     def run(self):
 
         for task in self.tasks:
-            task = task(self.params, self.path)
+            task = task(self.params, self.path, self.params.guess_name())
             task.recieve_cache(self.cache)
             task.launch()
 

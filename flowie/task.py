@@ -18,7 +18,7 @@ class Task(Executable):
         comment: str = "",
         isSave: bool = True,
     ):
-
+        
         super().__init__(params, path, name, comment, isSave)
 
         self.data = Data()

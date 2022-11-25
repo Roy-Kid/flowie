@@ -36,6 +36,9 @@ class TestProject:
             "project for test",
         )
 
+        param_space = project.params
+        assert len(param_space.expand()) == 9
+
         project.add_exe(Task)
         project.launch()
 

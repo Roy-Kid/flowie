@@ -4,17 +4,21 @@
 # version: 0.0.1
 
 from .typing import Iterable, List, Union, Dict
+from copy import deepcopy
 
 
 class ParamSpaceIterator:
     def __init__(self, Iterable: Iterable):
-        self.iterable = iter(Iterable)
+        self.iterable = Iterable
 
     def __iter__(self):
-        return self.iterable
+        return iter(self.iterable)
 
     def __next__(self):
-        return next(self.iterable)
+        return next(self)
+    
+    def __repr__(self):
+        return f'<flowie.ParamSpaceIterator {" ".join(self.iterable)}>'
 
 
 class ParamSpace(dict):
@@ -25,25 +29,24 @@ class ParamSpace(dict):
 
         return iter(self.expand())
 
-    def expand(self) -> List:
+    def expand(self) -> List['ParamSpace']:
 
         iters = {}
         scalars = {}
         # extract iterators
         for k, v in self.items():
             if isinstance(v, ParamSpaceIterator):
-                iters[k] = v
+                iters[k] = deepcopy(v)
             else:
                 scalars[k] = v
 
         if not len(iters):
-            return [scalars]
+            return [ParamSpace(scalars)]
 
         # get all combinations
         def _expand(iters):
             if len(iters) == 1:
-                k, v = list(iters.items())[0]
-                return [{k: vv} for vv in v]
+                return [ParamSpace(k=vv) for k,v in iters.items() for vv in v]
             else:
                 tmp = []
                 k, v = iters.popitem()

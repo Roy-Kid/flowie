@@ -14,19 +14,16 @@ import os
 
 class Task1(Task):
     def run(self):
-        print("task1")
         self.data["ans"] = 1
 
 
 class Task2(Task):
     def run(self):
-        print("task2")
         self.data["ans"] = 2
 
 
 class Task3(Task):
     def run(self):
-        print("task3")
         self.data["ans"] = 3
 
 
@@ -60,7 +57,7 @@ class TestDataViewer:
 
         dv = DataViewer.load(project.path.absolute())
 
-        assert len(dv) == 4
+        assert len(dv) == 2
 
 
 class TestData:

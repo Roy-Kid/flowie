@@ -55,7 +55,9 @@ class DataViewer(dict):
     @classmethod
     def load(cls, path: PathLike, format: str = "hdf5"):
 
-        return DataViewer._recursive_load(path, format)
+        cls_ins = DataViewer._recursive_load(path, format)
+        cls_ins.path = path
+        return cls_ins
 
     @classmethod
     def _recursive_load(cls, path: PathLike, format: str = "hdf5"):
@@ -87,3 +89,12 @@ class DataViewer(dict):
                 cls_ins[file.name] = Data.load(file.parent, format)
 
         return cls_ins
+
+    def ls(self):
+        return list(self.keys())
+
+    def cd(self, name):
+        return self[name]
+
+    def reload(self):
+        self.update(self.load(self.path))

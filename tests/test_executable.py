@@ -29,7 +29,7 @@ class TestExecutable:
 
     def test_path(self, exe):
         path = Path(__file__).parent
-        assert exe.path == Path(f"{path}/{exe.name}.Executable")
+        assert exe.path == Path(f"{path}/{exe.name}")
 
     def test_name(self, exe):
 

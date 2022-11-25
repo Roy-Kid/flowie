@@ -4,7 +4,7 @@
 # version: 0.0.1
 
 from .executable import Executable
-from .typing import PathLike
+from .typing import PathLike, List
 from .paramSpace import ParamSpace, ParamLike
 
 
@@ -20,14 +20,13 @@ class Project(Executable):
         comment: str = "",
         isSave: bool = True,
     ):
-        super().__init__(ParamSpace(params), path, name, comment, isSave)
+        super().__init__(params, path, name, comment, isSave)
 
-        self.exe = {}
+        self.exe:List[type[Executable]] = []
 
     def add_exe(self, exe):
-        exe_id = id(exe)
-        if exe_id not in self.exe:
-            self.exe[exe_id] = exe
+        if exe not in self.exe:
+            self.exe.append(exe)
         else:
             self.log.exception("duplicate adding exe")
 
@@ -35,6 +34,6 @@ class Project(Executable):
 
         params = self.params.expand()
         for param in params:
-            for exe in self.exe.values():
-                exe_ins = exe(param, self.path, isSave=True)
+            for exe in self.exe:
+                exe_ins = exe(param, self.path, name=param.guess_name(), isSave=True)
                 exe_ins.launch()

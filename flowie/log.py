@@ -6,6 +6,7 @@
 import logging
 from .configs import Configs
 from functools import cache
+from .typing import Optional
 
 log_configs = Configs(
     {
@@ -214,7 +215,7 @@ class Colors:
 class CustomFormatter(logging.Formatter):
     """Logging Formatter to add colors and count warning / errors"""
 
-    def __init__(self, custom_format, auto_colorized=True):
+    def __init__(self, custom_format:Optional[str]=None, auto_colorized=True):
         super(CustomFormatter, self).__init__()
         self.auto_colorized = auto_colorized
         self.custom_format = custom_format
@@ -269,7 +270,10 @@ class CustomFormatter(logging.Formatter):
             }
 
         else:
-            _format = self.custom_format
+            if self.custom_format:
+                _format = self.custom_format
+            else:
+                _format = f"%(asctime)s %(name)s (%(filename)s:%(lineno)d) %(levelname)s - %(message)s"
             return {
                 logging.DEBUG: _format,
                 logging.INFO: _format,
@@ -300,7 +304,6 @@ class __NullHandler(io.StringIO):
 def get_logger(
     name,
     level=None,
-    custom_format=None,
     isStream=True,
     isColorized=True,
     isFile=False,
@@ -310,12 +313,11 @@ def get_logger(
     interval=1,
     backup_count=3,
     isCompress=False,
+    custom_format=None,
 ):
 
     if level is None:
         level = log_configs["level"]
-
-    custom_format = custom_format or log_configs["format"]
 
     logging.basicConfig(level=level, stream=__NullHandler())
     logger = logging.getLogger(name)

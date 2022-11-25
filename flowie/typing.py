@@ -4,7 +4,7 @@
 # version: 0.0.1
 
 from pathlib import Path
-from typing import Union, NewType, Optional, List, Dict, Iterable
+from typing import Union, NewType, Optional, List, Dict, Iterable, Literal, Any, Callable
 import numpy as np
 
 

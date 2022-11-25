@@ -21,8 +21,8 @@ class Executable:
     ):
         self.TYPE = str(self.__class__.__name__)
         self.params = ParamSpace(params)
-        self.name = name if name else self.params.guess_name()
-        self.path = Path(path) / Path(f"{self.name}.{self.TYPE}")
+        self.name = name
+        self.path = Path(path) / Path(f"{name}")
         self.comment = comment
         self.log = get_logger(self.TYPE)
         self.isSave = isSave
