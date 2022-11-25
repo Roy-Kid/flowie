@@ -40,6 +40,13 @@ class TestParamSpaceIterator:
 
 
 class TestParamSpace:
+
+    def test_empty(self):
+
+        ps = ParamSpace({})
+        assert len(list(ps)) == 1
+        print(ps.expand())
+
     def test_pure_scalar(self):
 
         ps = ParamSpace({"a": [1, 2, 3], "b": 1})

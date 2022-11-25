@@ -31,7 +31,7 @@ class Executable:
 
     def mkdir(self):
         self.path.mkdir(parents=True, exist_ok=True)
-        self.log.info(f"mkdir {self.path}")
+        self.log.debug(f"mkdir {self.path}")
 
     def serialize(self):
 
@@ -48,19 +48,19 @@ class Executable:
             self.serialize()
 
     def launch(self):
-        self.log.info(f"launching excutable {self.name}")
+        self.log.info(f"launching {self.TYPE} {self.name}")
 
     def pre(self):
-        self.log.info(f"pre-run excutable {self.name}")
+        self.log.debug(f"pre-run {self.TYPE} {self.name}")
 
     def post(self):
-        self.log.info(f"post-run excutable {self.name}")
+        self.log.debug(f"post-run {self.TYPE} {self.name}")
 
     def on_except(self, e):
         self.log.exception(e)
 
     def on_finish(self):
-        self.log.info(f"finish excutable {self.name}")
+        self.log.debug(f"finish {self.TYPE} {self.name}")
 
     def run(self):
-        self.log.info(f"post-run excutable {self.name}")
+        self.log.debug(f"run {self.TYPE} {self.name}")
