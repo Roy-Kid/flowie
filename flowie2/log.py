@@ -6,7 +6,8 @@
 import logging
 from .configs import configs
 
-log_configs = configs['log']
+log_configs = configs["log"]
+
 
 class CustomFormatter(logging.Formatter):
 
@@ -22,7 +23,7 @@ class CustomFormatter(logging.Formatter):
         logging.INFO: grey + _format + reset,
         logging.WARNING: yellow + _format + reset,
         logging.ERROR: red + _format + reset,
-        logging.CRITICAL: bold_red + _format + reset
+        logging.CRITICAL: bold_red + _format + reset,
     }
 
     def format(self, record):
@@ -30,10 +31,11 @@ class CustomFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
+
 def get_logger(name: str):
 
     logger = logging.getLogger(name)
-    logger.setLevel(logging._nameToLevel[log_configs['level']])
+    logger.setLevel(logging._nameToLevel[log_configs["level"]])
 
     # streamHandler = logging.StreamHandler()
     # streamHandler.setFormatter(CustomFormatter())

@@ -5,15 +5,16 @@
 
 import logging
 
-class Configs(dict):
 
+class Configs(dict):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)  
+        super().__init__(*args, **kwargs)
+
 
 configs = Configs(
     {
-        'log': {
-            'level': 'DEBUG',
+        "log": {
+            "level": "DEBUG",
         }
     }
 )

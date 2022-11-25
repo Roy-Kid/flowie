@@ -7,22 +7,30 @@ from .executable import Executable
 from .typing import List
 from .task import Task
 
-class MetaJob(type):
 
+class MetaJob(type):
     def __new__(cls, clsname, bases, clsdict):
-        clsdict['tasks'] = []  # create tasks when define new Job class
+        clsdict["tasks"] = []  # create tasks when define new Job class
         return super().__new__(cls, clsname, bases, clsdict)
+
 
 class Job(Executable, metaclass=MetaJob):
 
     tasks: List[type[Task]]
 
-    def __init__(self, params: dict, path: str, name: str = '', comment: str = '', isSave: bool = True):
+    def __init__(
+        self,
+        params: dict,
+        path: str,
+        name: str = "",
+        comment: str = "",
+        isSave: bool = True,
+    ):
         super().__init__(params, path, name, comment, isSave)
 
     def launch(self):
-        
-        self.log.info(f'Job {self.name} is launching...')
+
+        self.log.info(f"Job {self.name} is launching...")
 
         try:
             self.pre()
@@ -38,9 +46,9 @@ class Job(Executable, metaclass=MetaJob):
         for task in self.tasks:
             task = task(self.params, self.path)
             task.launch()
-        
+
     @classmethod
-    def add_task(cls, task:type[Task]):
+    def add_task(cls, task: type[Task]):
         if task not in cls.tasks:
             cls.tasks.append(task)
         else:

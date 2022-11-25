@@ -7,6 +7,7 @@ from .typing import PathLike
 from pathlib import Path
 import shutil
 
+
 def delete(path: PathLike):
     """
     delete a file, or a directory with its content
@@ -19,4 +20,3 @@ def delete(path: PathLike):
     path = Path(path)
     if path.exists():
         shutil.rmtree(path)
-

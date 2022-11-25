@@ -9,18 +9,17 @@ import numpy as np
 from pathlib import Path
 import shutil
 
-class TestTask:
 
+class TestTask:
     def test_dump(self):
 
-        task = Task({'a': 1}, Path(__file__).parent, 'test', 'task for test')
-        task.data['b'] = 2
-        task.data['c'] = np.random.random((3, 5))
+        task = Task({"a": 1}, Path(__file__).parent, "test", "task for test")
+        task.data["b"] = 2
+        task.data["c"] = np.random.random((3, 5))
         task.launch()
 
         another_task = Task.load(task.path)
-        assert another_task.params['a'] == 1
-        assert another_task.data['b'] == 2
+        assert another_task.params["a"] == 1
+        assert another_task.data["b"] == 2
 
         delete(task.path)
-        

@@ -6,10 +6,9 @@
 from flowie2 import Job, Task
 import pytest
 
+
 class TestJob:
-
     def test_add_task(self):
-
         class Job1(Job):
             pass
 
@@ -19,5 +18,3 @@ class TestJob:
 
         with pytest.raises(KeyError):
             Job1.add_task(Task)
-
-    
