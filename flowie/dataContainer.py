@@ -20,7 +20,7 @@ class Data(dict):
     def dump(self, path: PathLike, format: str = "hdf5"):
         write_to = Path(path) / Path("data.hdf5")
         self.log.info(f"dump data to {write_to}")
-        with h5py.File(write_to, "w") as f:
+        with h5py.File(write_to, "a") as f:
             for key, value in self.items():
                 try:
                     f[key] = value
@@ -56,7 +56,8 @@ class DataViewer(dict):
     def load(cls, path: PathLike, format: str = "hdf5"):
 
         cls_ins = DataViewer._recursive_load(path, format)
-        cls_ins.path = path
+        setattr(cls_ins, 'path', Path(path))
+        # cls_ins.__annotations__.update({'path': 'path where data is loaded'})
         return cls_ins
 
     @classmethod
@@ -81,15 +82,19 @@ class DataViewer(dict):
         # We assume that only the final folder contains data.
         if path.is_dir():
 
-            for p in path.iterdir():
+            for p in path.iterdir():  # iter dir and file
                 dv = cls._recursive_load(p, format)
                 cls_ins[p.name] = dv
 
-            for file in path.glob("*.hdf5"):
-                cls_ins[file.name] = Data.load(file.parent, format)
+        else:
+            if path.suffix == '.hdf5':
+                cls_ins.update(Data.load(path.parent, format))
+            else:
+                pass
 
         return cls_ins
 
+    @property
     def ls(self):
         return list(self.keys())
 
@@ -98,3 +103,7 @@ class DataViewer(dict):
 
     def reload(self):
         self.update(self.load(self.path))
+
+    @property
+    def isEmpty(self):
+        return bool(len(self))
