@@ -9,7 +9,7 @@ from flowie.file import delete
 import numpy as np
 import numpy.testing as npt
 import pytest
-
+import os
 
 class Task1(Task):
     def run(self):
@@ -38,8 +38,9 @@ class Job2(Job):
 
 
 class TestDataViewer:
-    @pytest.fixture(name="test_project", scope="class")
-    def init_project(self):
+
+    def test_load(self):
+
         project = Project(
             "test",
             {"a": 1, "b": ParamSpaceIterator([2, 3])},
@@ -57,13 +58,7 @@ class TestDataViewer:
 
         project.launch()
 
-        yield project
-
-        delete(project.path)
-
-    def test_load(self, test_project):
-
-        dv = DataViewer.load(test_project.path.absolute())
+        dv = DataViewer.load(project.path.absolute())
 
         assert len(dv) == 4
 
@@ -81,5 +76,3 @@ class TestData:
 
         assert data["b"] == 2
         npt.assert_allclose(data["c"], ran_arr)
-
-        delete(task.path)
