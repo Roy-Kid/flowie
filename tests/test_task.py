@@ -3,24 +3,23 @@
 # date: 2022-11-21
 # version: 0.0.1
 
-from flowie2.task import Task
-from flowie2.file import delete
+from flowie.task import Task
+from flowie.file import delete
 import numpy as np
 from pathlib import Path
 import shutil
 
-class TestTask:
 
+class TestTask:
     def test_dump(self):
 
-        task = Task({'a': 1}, Path(__file__).parent, 'test', 'task for test')
-        task.data['b'] = 2
-        task.data['c'] = np.random.random((3, 5))
+        task = Task({"a": 1}, Path(__file__).parent, "test", "task for test")
+        task.data["b"] = 2
+        task.data["c"] = np.random.random((3, 5))
         task.launch()
 
         another_task = Task.load(task.path)
-        assert another_task.params['a'] == 1
-        assert another_task.data['b'] == 2
+        assert another_task.params["a"] == 1
+        assert another_task.data["b"] == 2
 
         delete(task.path)
-        

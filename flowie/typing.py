@@ -10,4 +10,4 @@ import numpy as np
 
 PathLike = Union[str, Path]
 Number = Union[int, float]
-Array = NewType('Array', np.ndarray)
+Array = NewType("Array", np.ndarray)
